@@ -73,16 +73,17 @@
                     height: 2px;
                     bottom: 0;
                     left: 0;
-                    background-color: #FFF;
+                    background-color: rgba(255,255,255,.5);
                     visibility: hidden;
                     transform: scaleX(0);
                     transition: all 0.3s ease-in-out;
                 }
+                   
                 .nav-item.nav-link:hover:before{
                     visibility: visible;
                     transform: scaleX(1);
                 }
-
+                
             }
         }
     }
