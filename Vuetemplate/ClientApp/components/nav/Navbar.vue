@@ -1,6 +1,6 @@
 ﻿<template>
     <div>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">{{siteName}}</a>
             </div>
@@ -17,7 +17,6 @@
                 <div class="navbar-nav ml-auto">
                     <template v-for="(route,index) in $router.options.routes">
                         <a class="nav-item nav-link"
-                           v-if="route.path !== $route.path"
                            v-bind:class="{'active' : routeActive(route)}"
                            :key="index"
                            :href="route.path">{{route.name}}</a>
@@ -51,3 +50,40 @@
       },
     };
 </script>
+
+<style lang="scss">
+    #navbar{
+        .navbar-header{
+
+        }
+
+        .navbar-collapse{
+            .navbar-nav{
+                .nav-item.nav-link.active{
+                    
+                }
+
+                .nav-item.nav-link{
+                    position:relative;
+                }
+                .nav-item.nav-link:before{
+                    content: "";
+                    position: absolute;
+                    width: 100%;
+                    height: 2px;
+                    bottom: 0;
+                    left: 0;
+                    background-color: #FFF;
+                    visibility: hidden;
+                    transform: scaleX(0);
+                    transition: all 0.3s ease-in-out;
+                }
+                .nav-item.nav-link:hover:before{
+                    visibility: visible;
+                    transform: scaleX(1);
+                }
+
+            }
+        }
+    }
+</style>
