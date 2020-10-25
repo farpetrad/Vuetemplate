@@ -156,7 +156,7 @@ module.exports = {
       }),
       new ScriptExtHtmlWebpackPlugin({
           custom: {
-              test: /\.js$/, // adjust this regex based on your demand
+              test: /\.js$/,
               attribute: 'nonce',
               value: '__replaceme__'
           }
