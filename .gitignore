@@ -268,3 +268,4 @@ __pycache__/
 /Vuetemplate/wwwroot/Content/Images
 /Vuetemplate/wwwroot/Content
 /Vuetemplate/.npmrc
+/Vuetemplate/web.config

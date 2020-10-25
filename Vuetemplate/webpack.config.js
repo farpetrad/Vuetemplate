@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const WebpackCleanPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssPlugin = require('optimize-css-assets-webpack-plugin');
@@ -96,8 +97,11 @@ module.exports = {
         ],
       },
       {
-        test: /\.css$/,
-        loader: 'style-loader!css-loader',
+          test: /\.css$/,
+          use: [
+              MiniCssExtractPlugin.loader,
+              'style-loader!css-loader'
+          ]
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
@@ -149,6 +153,13 @@ module.exports = {
           filename: path.resolve(__dirname, pageOutputPath + 'index.html'),
           inject: true,
           template: path.resolve(__dirname, appbasePath + '/public/index.html'),
+      }),
+      new ScriptExtHtmlWebpackPlugin({
+          custom: {
+              test: /\.js$/, // adjust this regex based on your demand
+              attribute: 'nonce',
+              value: '__replaceme__'
+          }
       }),
 
       new MiniCssExtractPlugin({
