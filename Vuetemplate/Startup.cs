@@ -19,6 +19,8 @@ namespace VueTemplate
 {
     public class Startup
     {
+        private static readonly IEnumerable<string> validContentTypes = new HashSet<string>() { "text/html" };
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -58,11 +60,8 @@ namespace VueTemplate
                 options.Level = CompressionLevel.Optimal;
             })
             .AddResponseCaching();
-        }
+        }        
 
-        private static readonly IEnumerable<string> validContentTypes = new HashSet<string>() { "text/html" };
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -78,8 +77,6 @@ namespace VueTemplate
 
             var currentNonce = string.Empty;
 
-            //app.UseMiddleware<HtmlInjectorMiddleware>();
-
             app.UseResponseCompression()
                 .Use(async (context, next) =>
                 {
@@ -89,7 +86,6 @@ namespace VueTemplate
 
                     context.Request.EnableBuffering();
 
-                    //TODO: need to replace any inline javascript with a hash or nonce
                     context.Response.Headers.Add("Content-Security-Policy", $"default-src 'self'; script-src 'self' 'nonce-{currentNonce}'; style-src 'self' use.fontawesome.com 'nonce-{currentNonce}' maxcdn.bootstrapcdn.com fonts.googleapis.com; font-src fonts.gstatic.com 'nonce-{currentNonce}'; img-src 'self'");
                     context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
                     context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
@@ -110,15 +106,13 @@ namespace VueTemplate
                     {
                         using (var streamReader = new StreamReader(context.Response.Body))
                         {
-                            // Read the body
                             context.Response.Body.Seek(0, SeekOrigin.Begin);
                             var responseBody = await streamReader.ReadToEndAsync();
 
                             responseBody = responseBody.Replace("__replaceme__", currentNonce);
 
-                            // Create a new stream with the modified body, and reset the content length to match the new stream
                             var requestContent = new StringContent(responseBody, Encoding.UTF8, contentType);
-                            context.Response.Body = await requestContent.ReadAsStreamAsync();//modified stream
+                            context.Response.Body = await requestContent.ReadAsStreamAsync();
                             context.Response.ContentLength = context.Response.Body.Length;
                         }
                     }                    
