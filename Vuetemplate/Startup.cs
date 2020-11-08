@@ -95,9 +95,15 @@ namespace VueTemplate
 
                     var memStream = new MemoryStream();
                     context.Response.Body = memStream;
-                                        
 
-                    await next().ConfigureAwait(false);
+
+                    await next();
+
+                    if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+                    {
+                        context.Request.Path = "/index.html";
+                        await next();
+                    }
 
                     var contentType = context.Response.ContentType?.ToLower();
                     contentType = contentType?.Split(';', StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
