@@ -17,7 +17,7 @@
     "@fortawesome/pro-regular-svg-icons": "5.3.1",
     "@fortawesome/pro-solid-svg-icons": "5.3.1",
     "@fortawesome/vue-fontawesome": "0.1.7",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "regenerator-runtime": "^0.13.7",
     "vue": "2.6.12",
